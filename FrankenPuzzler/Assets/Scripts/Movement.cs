@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
     }
 
     bool JumpButtonPressed() {
-        if (!(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))) {
+        if (!Input.GetKeyDown(KeyCode.Space)) {
             return false;
         }
         jumpInputTime = Time.time;
@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
     }
 
     void RecordJumpInput() {
-        jumpInput = jumpInput || (!isCrawling && !groundCheck.isNearLadder && groundCheck.isGrounded && JumpButtonPressed());
+        jumpInput = jumpInput || (!isCrawling && (groundCheck.isGrounded || groundCheck.isNearLadder) && JumpButtonPressed());
     }
 
     void RecordLadderInput()
@@ -57,11 +57,11 @@ public class Movement : MonoBehaviour
     float ProcessVerticalMovement() {
         float velocity;
         rb.useGravity = true;
-        if (groundCheck.isNearLadder) {
+        if (jumpInput && (Time.time - jumpInputTime < 0.1f)) {
+            velocity =  jumpVelocity;
+        } else if (groundCheck.isNearLadder && ladderInput > 0) {
             rb.useGravity = false;
             velocity = ladderInput;
-        } else if (jumpInput && (Time.time - jumpInputTime < 0.1f)) {
-            velocity =  jumpVelocity;
         } else {
             velocity = rb.velocity.y;
         }
@@ -91,7 +91,6 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.maxDepenetrationVelocity = 1f;
         CalculateJumpVelocity();
         SetWalkingSpeed();
     }
