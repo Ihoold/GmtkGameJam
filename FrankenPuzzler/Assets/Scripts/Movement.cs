@@ -107,6 +107,5 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate() {
         ProcessMovement();
-        Debug.Log(transform.position.y);
     }
 }
