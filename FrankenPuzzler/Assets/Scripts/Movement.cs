@@ -5,17 +5,24 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public float walkingSpeed;
+    public float crawlingSpeed;
     public float jumpHeight;
     public TrackGround groundCheck;
 
     float horizontalMoveInput;
     bool jumpInput;
+
+    [HideInInspector] public bool isCrawling;
     float jumpVelocity;
-    float currentMoveSpeed = 0f;
+    float currentMoveSpeed;
     Rigidbody rb;
 
     public void SetWalkingSpeed() {
         currentMoveSpeed = walkingSpeed;
+    }
+
+    public void SetCrawlingSpeed() {
+        currentMoveSpeed = crawlingSpeed;
     }
 
     void RecordMovementInput() {
@@ -27,7 +34,7 @@ public class Movement : MonoBehaviour
     }
 
     void RecordJumpInput() {
-        jumpInput = groundCheck.isGrounded && JumpButtonPressed();
+        jumpInput = !isCrawling && groundCheck.isGrounded && JumpButtonPressed();
     }
 
     float ProcessHorizontalMovement() {
@@ -39,6 +46,17 @@ public class Movement : MonoBehaviour
             return jumpVelocity;
         } else {
             return rb.velocity.y;
+        }
+    }
+
+    void ToggleCrawling(bool toggle) {
+        isCrawling = toggle;
+        if (isCrawling) {
+            SetCrawlingSpeed();
+            transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+        } else {
+            SetWalkingSpeed();
+            transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
         }
     }
 
@@ -61,6 +79,7 @@ public class Movement : MonoBehaviour
     {
         RecordMovementInput();
         RecordJumpInput();
+        if (Input.GetKeyDown(KeyCode.C)) ToggleCrawling(!isCrawling);
     }
 
     void FixedUpdate() {
