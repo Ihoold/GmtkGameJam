@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
     }
 
     void CalculateJumpVelocity() {
-        jumpVelocity = 2 * jumpHeight / Mathf.Sqrt(-2 * jumpHeight / Physics.gravity.y);
+        jumpVelocity = Mathf.Sqrt(-2 * jumpHeight * Physics.gravity.y);
     }
 
     void Start()
@@ -107,5 +107,6 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate() {
         ProcessMovement();
+        Debug.Log(transform.position.y);
     }
 }
