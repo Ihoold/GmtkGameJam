@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,13 @@ public class Movement : MonoBehaviour
     public float walkingSpeed;
     public float crawlingSpeed;
     public float jumpHeight;
+    public float climbingSpeed;
     public TrackGround groundCheck;
 
     float horizontalMoveInput;
+    float jumpInputTime;
     bool jumpInput;
+    float ladderInput;
 
     [HideInInspector] public bool isCrawling;
     float jumpVelocity;
@@ -30,11 +34,20 @@ public class Movement : MonoBehaviour
     }
 
     bool JumpButtonPressed() {
-        return Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.JoystickButton0);
+        if (!(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))) {
+            return false;
+        }
+        jumpInputTime = Time.time;
+        return true;
     }
 
     void RecordJumpInput() {
-        jumpInput = !isCrawling && groundCheck.isGrounded && JumpButtonPressed();
+        jumpInput = jumpInput || (!isCrawling && !groundCheck.isNearLadder && groundCheck.isGrounded && JumpButtonPressed());
+    }
+
+    void RecordLadderInput()
+    {
+        ladderInput = climbingSpeed * Input.GetAxisRaw("Vertical"); 
     }
 
     float ProcessHorizontalMovement() {
@@ -42,11 +55,18 @@ public class Movement : MonoBehaviour
     }
 
     float ProcessVerticalMovement() {
-        if (jumpInput) {
-            return jumpVelocity;
+        float velocity;
+        rb.useGravity = true;
+        if (groundCheck.isNearLadder) {
+            rb.useGravity = false;
+            velocity = ladderInput;
+        } else if (jumpInput && (Time.time - jumpInputTime < 0.1f)) {
+            velocity =  jumpVelocity;
         } else {
-            return rb.velocity.y;
+            velocity = rb.velocity.y;
         }
+        jumpInput = false;
+        return velocity;
     }
 
     void ToggleCrawling(bool toggle) {
@@ -71,6 +91,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.maxDepenetrationVelocity = 1f;
         CalculateJumpVelocity();
         SetWalkingSpeed();
     }
@@ -79,8 +100,10 @@ public class Movement : MonoBehaviour
     {
         RecordMovementInput();
         RecordJumpInput();
+        RecordLadderInput();
         if (Input.GetKeyDown(KeyCode.C)) ToggleCrawling(!isCrawling);
     }
+
 
     void FixedUpdate() {
         ProcessMovement();

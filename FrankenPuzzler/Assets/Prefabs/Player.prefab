@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrounded: 0
+  isNearLadder: 0
 --- !u!1 &2120639030239340584
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,5 +189,6 @@ MonoBehaviour:
   walkingSpeed: 5
   crawlingSpeed: 2
   jumpHeight: 3
+  climbingSpeed: 2
   groundCheck: {fileID: 1137573029}
   isCrawling: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrackGround : MonoBehaviour
 {
     public bool isGrounded = false;
+    public bool isNearLadder = false;
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")) {
@@ -22,5 +23,13 @@ public class TrackGround : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             isGrounded = false;
         }
+    }
+
+    void CheckIfNearLadder() {
+        isNearLadder = Physics.Raycast(transform.position, transform.forward, 1f, LayerMask.NameToLayer("Ladder"), QueryTriggerInteraction.Collide);
+    }
+
+    void Update() {
+        CheckIfNearLadder();
     }
 }
