@@ -250,7 +250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3801976732b6a984095776b0bb93b1ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
+  maxHp: 60
   bloodOverlay: {fileID: 0}
   bodyUI: {fileID: 0}
+  menuManager: {fileID: 0}
   availableLimbs: 0101010101

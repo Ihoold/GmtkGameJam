@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject deathMenu;
 
     public void TogglePauseMenu(bool toggle) {
         if (toggle) {
@@ -15,6 +16,11 @@ public class PauseMenu : MonoBehaviour
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
         }
+    }
+
+    public void ShowDeathMenu() {
+        deathMenu.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void Quit() {

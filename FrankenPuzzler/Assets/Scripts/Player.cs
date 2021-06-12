@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float maxHp;
     public Image bloodOverlay;
     public BodyUI bodyUI;
+    public MenuManager menuManager;
     public bool[] availableLimbs = new bool[5];
     
     Trigger currentTrigger = null;
@@ -57,16 +58,24 @@ public class Player : MonoBehaviour
         hp = maxHp;
     }
 
+    void CheckHp() {
+        if (hp < 0) {
+            menuManager.ShowDeathMenu();
+        }
+    }
+
     void Update()
     {
         UpdateOverlayColor();
         CheckEglibleLimbs();
         UpdateLimbsColors();
+        CheckHp();
     }
 
     public void SacraficeLimb(int index) {
         if (!eglibleLimbs[index]) return;    
         availableLimbs[index] = false;
+        StartCoroutine(Bleed());
         currentTrigger.PerformAction();
         currentTrigger = null;
     }
