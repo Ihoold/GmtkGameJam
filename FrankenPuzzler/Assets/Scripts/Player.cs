@@ -44,11 +44,11 @@ public class Player : MonoBehaviour
     void UpdateLimbsColors() {
         for (int i = 0; i < 5; i++) {
             if (!availableLimbs[i]) {
-                bodyUI.bodyParts[i].color = Color.red;
+                bodyUI.bodyParts[i].color = bodyUI.UnavailableColor;
             } else if (eglibleLimbs[i]) {
-                bodyUI.bodyParts[i].color = Color.yellow;
+                bodyUI.bodyParts[i].color = bodyUI.EglibleColor;
             } else {
-                bodyUI.bodyParts[i].color = Color.white;
+                bodyUI.bodyParts[i].color = bodyUI.AvailableColor;
             }
         }
     }

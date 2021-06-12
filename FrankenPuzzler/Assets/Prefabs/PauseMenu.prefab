@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64705884, g: 0.68235296, b: 0.6156863, a: 1}
+  m_Color: {r: 0.90196085, g: 0.8705883, b: 0.79215693, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -292,6 +292,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb94f035a694b1a449b12356d43dadf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EglibleColor: {r: 1, g: 0.8352942, b: 0.41176474, a: 1}
+  UnavailableColor: {r: 0.81568635, g: 0.098039225, b: 0.27450982, a: 1}
+  AvailableColor: {r: 1, g: 1, b: 1, a: 1}
   player: {fileID: 0}
   bodyParts:
   - {fileID: 5184971394514330134}
@@ -1083,7 +1086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64705884, g: 0.68235296, b: 0.6156863, a: 1}
+  m_Color: {r: 0.90196085, g: 0.8705883, b: 0.79215693, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
