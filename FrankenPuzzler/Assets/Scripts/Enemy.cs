@@ -12,15 +12,29 @@ public class Enemy : MonoBehaviour
     bool attacked = false;
     int currentPoint;
     Rigidbody rb;
+    Animator animator;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate() {
-        if (attacked) return;
+        if (attacked) {
+            animator.SetBool("Moving", false);
+            return;
+        }
+        animator.SetBool("Moving", true);
         if (rb.position == points[currentPoint].position) currentPoint = (currentPoint + 1) % points.Length;
-        rb.MovePosition(Vector3.MoveTowards(rb.position, points[currentPoint].position, speed * Time.deltaTime));
+
+        float direction = (rb.position - points[currentPoint].position).x;
+        if (direction > 0.1f) {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 270, 0), 720f * Time.deltaTime);
+        } else if (direction < 0.1f) {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 90, 0), 720f * Time.deltaTime);
+        }
+
+        rb.MovePosition(Vector3.MoveTowards(rb.position, points[currentPoint].position, speed * Time.deltaTime)); 
     }
 
     public void Die() {
