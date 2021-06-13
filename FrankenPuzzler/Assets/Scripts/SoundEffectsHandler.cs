@@ -5,7 +5,7 @@ using UnityEngine;
 public class SoundEffectsHandler : MonoBehaviour
 {
     Dictionary<string, AudioSource> sources = new Dictionary<string, AudioSource>();
-    SoundSO[] soundEffects;
+    public SoundSO[] soundEffects;
 
     void Start() {
         foreach (SoundSO effect in soundEffects) {
