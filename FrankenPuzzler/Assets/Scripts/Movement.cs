@@ -125,7 +125,7 @@ public class Movement : MonoBehaviour
         } else {
             velocity = rb.velocity.y;
         }
-        if (velocity < 0) {
+        if (velocity <= 0.01f) {
             jumping = false;
         }
         jumpInput = false;
@@ -148,6 +148,7 @@ public class Movement : MonoBehaviour
 
     void ProcessMovement() {
         rb.velocity = new Vector3(ProcessHorizontalMovement(), ProcessVerticalMovement(), 0);
+        if (Mathf.Abs(rb.velocity.y) < 0.01f) rb.MovePosition(new Vector3(rb.position.x, rb.position.y + 0.01f, rb.position.z));
     }
 
     void CalculateJumpVelocity() {

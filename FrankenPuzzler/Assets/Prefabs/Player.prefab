@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   isNearLadder: 0
+  isOverLadder: 0
 --- !u!1 &1972467791
 GameObject:
   m_ObjectHideFlags: 0
