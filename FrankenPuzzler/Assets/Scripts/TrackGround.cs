@@ -26,7 +26,7 @@ public class TrackGround : MonoBehaviour
     }
 
     void CheckIfNearLadder() {
-        isNearLadder = Physics.Raycast(transform.position, transform.forward, 1f, LayerMask.NameToLayer("Ladder"), QueryTriggerInteraction.Collide);
+        isNearLadder = Physics.Raycast(transform.position, transform.forward, 1f, LayerMask.NameToLayer("Ladders"), QueryTriggerInteraction.Collide);
     }
 
     void Update() {
