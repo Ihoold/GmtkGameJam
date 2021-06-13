@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
     float ladderInput;
 
     [HideInInspector] public bool isCrawling;
+    bool jumping;
     float jumpVelocity;
     float currentMoveSpeed;
     Rigidbody rb;
@@ -78,13 +79,13 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        if (!jumpInput && ladderInput > 0) {
+        if (!jumping && (IsGoingUpOnLadder() || IsGoingDownOnLadder())) {
             modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 720f * Time.deltaTime);
             return;
         }
 
-        if (!jumpInput && ladderInput < 0) {
-            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 720f * Time.deltaTime);
+        if (Mathf.Abs(ladderInput) > 0.1f) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, (ladderInput > 0) ? 180 : 0, 0), 720f * Time.deltaTime);
             return;
         }
 
@@ -98,20 +99,34 @@ public class Movement : MonoBehaviour
         return horizontalMovement;
     }
 
+    bool IsGoingUpOnLadder() {
+        return groundCheck.isNearLadder && ladderInput > 0.1f;
+    }
+
+    bool IsGoingDownOnLadder() {
+        return (groundCheck.isOverLadder || groundCheck.isNearLadder) && (ladderInput < -0.1f);
+    }
+
     float ProcessVerticalMovement() {
         float velocity;
         rb.useGravity = true;
+        animator.SetBool("Climbing", false);
         if (jumpInput && (Time.time - jumpInputTime < 0.1f)) {
             velocity = jumpVelocity;
             animator.SetTrigger("Jumping");
-            animator.SetBool("Climbing", false);
-        } else if (groundCheck.isNearLadder && ladderInput > 0) {
+            jumping = true;
+        } else if ((IsGoingUpOnLadder() || IsGoingDownOnLadder()) && !jumping) {
             animator.SetBool("Climbing", true);
             rb.useGravity = false;
             velocity = ladderInput;
+        } else if (!groundCheck.isNearLadder && groundCheck.isOverLadder) {
+            rb.useGravity = false;
+            velocity = 0f;
         } else {
             velocity = rb.velocity.y;
-            animator.SetBool("Climbing", false);
+        }
+        if (velocity < 0) {
+            jumping = false;
         }
         jumpInput = false;
         return velocity;
