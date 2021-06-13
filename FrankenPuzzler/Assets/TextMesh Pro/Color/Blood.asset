@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Blood
   m_EditorClassIdentifier: 
   colorMode: 2
-  topLeft: {r: 0.909804, g: 0.26666668, b: 0.26666668, a: 1}
-  topRight: {r: 0.909804, g: 0.26666668, b: 0.26666668, a: 1}
-  bottomLeft: {r: 0.4433962, g: 0.035555363, b: 0.035555363, a: 1}
-  bottomRight: {r: 0.4433962, g: 0.035555363, b: 0.035555363, a: 1}
+  topLeft: {r: 0.7348182, g: 1, b: 0, a: 1}
+  topRight: {r: 0.7348182, g: 1, b: 0, a: 1}
+  bottomLeft: {r: 0.09953192, g: 0.3018868, b: 0.06949092, a: 1}
+  bottomRight: {r: 0.09953192, g: 0.3018868, b: 0.06949092, a: 1}
