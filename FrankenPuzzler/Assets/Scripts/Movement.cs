@@ -64,21 +64,21 @@ public class Movement : MonoBehaviour
 
     void FixModelRotation() {
         if (!jumpInput && ladderInput > 0) {
-            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 360f * Time.deltaTime);
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 720f * Time.deltaTime);
             return;
         }
 
         if (rb.velocity.x < -0.05f) {
-            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 90, 0), 180f * Time.deltaTime);
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 90, 0), 720f * Time.deltaTime);
             return;
         } 
         
         if (rb.velocity.x > 0.05f) {
-            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 270, 0), 180f * Time.deltaTime);
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 270, 0), 720f * Time.deltaTime);
             return;
         }
 
-        modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 180f * Time.deltaTime);
+        modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 720f * Time.deltaTime);
     }
 
     float ProcessHorizontalMovement() {
