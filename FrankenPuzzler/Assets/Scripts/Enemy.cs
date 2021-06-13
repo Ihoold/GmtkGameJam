@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public Transform[] points;
     public float speed;
+    public GameObject droppedLimb = null;
 
     bool attacked = false;
     int currentPoint;
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     public void Die() {
         this.gameObject.SetActive(false);
+        GameObject.Instantiate(droppedLimb, transform.position, Quaternion.identity);
     }
 
     internal void SetAttacked()

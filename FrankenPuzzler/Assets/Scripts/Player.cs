@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public MenuManager menuManager;
     public bool[] availableLimbs = new bool[5];
     public GameObject[] limbs = new GameObject[5];
+    public GameObject darknessUI;
     
     [HideInInspector] public bool isAttacking = false;
     bool attackInput;
@@ -30,10 +31,8 @@ public class Player : MonoBehaviour
         for (int i = 0; i < 5; i++) {
             limbs[i].SetActive(availableLimbs[i]);
         }
-
-        if (!availableLimbs[3] || !availableLimbs[4]) {
-            GetComponent<Movement>().ToggleCrawling(true);
-        }
+        GetComponent<Movement>().ToggleCrawling(!availableLimbs[3] || !availableLimbs[4]);
+        darknessUI.SetActive(!availableLimbs[0]);
     }
 
     IEnumerator Bleed() {
