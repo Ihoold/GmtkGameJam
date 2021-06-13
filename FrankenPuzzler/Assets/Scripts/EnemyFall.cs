@@ -6,7 +6,7 @@ public class EnemyFall : MonoBehaviour
 {
     bool isActive = false;
     
-    void OnTriggerEnter(Collider collider) {
+    void OnTriggerStay(Collider collider) {
         if (!isActive) return;
 
         if (collider.gameObject.layer == LayerMask.NameToLayer("Enemies")) {

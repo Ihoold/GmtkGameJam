@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -174,7 +175,7 @@ public class Movement : MonoBehaviour
         RecordJumpInput();
         RecordLadderInput();
         SetAnimatorGroundedParam();
-        if (Input.GetKeyDown(KeyCode.C)) ToggleCrawling(!isCrawling);
+        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 
