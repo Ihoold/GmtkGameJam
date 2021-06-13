@@ -197,6 +197,18 @@ PrefabInstance:
       propertyPath: m_Lens.FieldOfView
       value: 75
       objectReference: {fileID: 0}
+    - target: {fileID: 3257700953491629422, guid: 42328f865e4683d40a93f1e4bda48e01, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257700953491629422, guid: 42328f865e4683d40a93f1e4bda48e01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257700953491629422, guid: 42328f865e4683d40a93f1e4bda48e01, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42328f865e4683d40a93f1e4bda48e01, type: 3}
 --- !u!4 &2161358597088780949 stripped
