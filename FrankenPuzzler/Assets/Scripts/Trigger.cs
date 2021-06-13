@@ -13,7 +13,7 @@ public enum TriggerType {
 public class Trigger : MonoBehaviour
 {
     public TriggerType type;
-    public GameObject actionObject;
+    public GameObject[] actionObjects;
 
     [HideInInspector] public bool used = false;
 
@@ -32,6 +32,8 @@ public class Trigger : MonoBehaviour
 
     public void PerformAction() {
         used = true;
-        actionObject.SendMessage("TriggerAction");
+        foreach (GameObject actionObject in actionObjects) {
+            actionObject.SendMessage("TriggerAction");
+        }
     }
 }
