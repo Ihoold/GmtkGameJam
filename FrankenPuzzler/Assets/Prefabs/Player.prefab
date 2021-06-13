@@ -248,6 +248,7 @@ MonoBehaviour:
   - {fileID: 2962088704710618710}
   - {fileID: 4563441380626350937}
   - {fileID: 2512142676839964114}
+  darknessUI: {fileID: 6065538424623508657}
   isAttacking: 0
 --- !u!95 &919876479
 Animator:
@@ -361,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1803109358059469649
 RectTransform:
   m_ObjectHideFlags: 0
