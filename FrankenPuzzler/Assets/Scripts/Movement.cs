@@ -10,6 +10,9 @@ public class Movement : MonoBehaviour
     public float jumpHeight;
     public float climbingSpeed;
     public TrackGround groundCheck;
+    public Transform modelRotation;
+    public BoxCollider standingCollider;
+    public BoxCollider crawlingCollider;
 
     float horizontalMoveInput;
     float jumpInputTime;
@@ -46,12 +49,37 @@ public class Movement : MonoBehaviour
         jumpInput = jumpInput || (!isCrawling && (groundCheck.isGrounded || groundCheck.isNearLadder) && JumpButtonPressed());
     }
 
-    void RecordLadderInput()
-    {
-        ladderInput = climbingSpeed * Input.GetAxisRaw("Vertical"); 
+    bool IsAbleToClimb() {
+        return GetComponent<Player>().availableLimbs[1] && GetComponent<Player>().availableLimbs[2];
     }
 
-    // void FixModelRotation()
+    void RecordLadderInput()
+    {
+        if (IsAbleToClimb()) {
+            ladderInput = climbingSpeed * Input.GetAxisRaw("Vertical"); 
+        } else {
+            ladderInput = 0f;
+        }
+    }
+
+    void FixModelRotation() {
+        if (!jumpInput && ladderInput > 0) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 360f * Time.deltaTime);
+            return;
+        }
+
+        if (rb.velocity.x < -0.05f) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 90, 0), 180f * Time.deltaTime);
+            return;
+        } 
+        
+        if (rb.velocity.x > 0.05f) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 270, 0), 180f * Time.deltaTime);
+            return;
+        }
+
+        modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 180f * Time.deltaTime);
+    }
 
     float ProcessHorizontalMovement() {
         float horizontalMovement = horizontalMoveInput * currentMoveSpeed;
@@ -63,12 +91,16 @@ public class Movement : MonoBehaviour
         float velocity;
         rb.useGravity = true;
         if (jumpInput && (Time.time - jumpInputTime < 0.1f)) {
-            velocity =  jumpVelocity;
+            velocity = jumpVelocity;
+            animator.SetTrigger("Jumping");
+            animator.SetBool("Climbing", false);
         } else if (groundCheck.isNearLadder && ladderInput > 0) {
+            animator.SetBool("Climbing", true);
             rb.useGravity = false;
             velocity = ladderInput;
         } else {
             velocity = rb.velocity.y;
+            animator.SetBool("Climbing", false);
         }
         jumpInput = false;
         return velocity;
@@ -78,10 +110,12 @@ public class Movement : MonoBehaviour
         isCrawling = toggle;
         if (isCrawling) {
             SetCrawlingSpeed();
-            transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+            standingCollider.transform.gameObject.SetActive(false);
+            crawlingCollider.transform.gameObject.SetActive(true);
         } else {
             SetWalkingSpeed();
-            transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
+            standingCollider.transform.gameObject.SetActive(true);
+            crawlingCollider.transform.gameObject.SetActive(false);
         }
         animator.SetBool("Crawling", isCrawling);
     }
@@ -92,6 +126,10 @@ public class Movement : MonoBehaviour
 
     void CalculateJumpVelocity() {
         jumpVelocity = Mathf.Sqrt(-2 * jumpHeight * Physics.gravity.y);
+    }
+
+    public void SetAnimatorGroundedParam() {
+        animator.SetBool("Grounded", groundCheck.isGrounded);
     }
 
     void Start()
@@ -108,6 +146,7 @@ public class Movement : MonoBehaviour
         RecordMovementInput();
         RecordJumpInput();
         RecordLadderInput();
+        SetAnimatorGroundedParam();
         if (Input.GetKeyDown(KeyCode.C)) ToggleCrawling(!isCrawling);
     }
 
@@ -115,5 +154,6 @@ public class Movement : MonoBehaviour
     void FixedUpdate() {
         if (GetComponent<Player>().isAttacking) return;
         ProcessMovement();
+        FixModelRotation();
     }
 }

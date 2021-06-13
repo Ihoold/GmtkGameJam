@@ -11,9 +11,11 @@ public class Player : MonoBehaviour
     public BodyUI bodyUI;
     public MenuManager menuManager;
     public bool[] availableLimbs = new bool[5];
+    public GameObject[] limbs = new GameObject[5];
     
     [HideInInspector] public bool isAttacking = false;
     bool attackInput;
+    Animator animator;
     Trigger currentTrigger = null;
     bool[] eglibleLimbs = new bool[5];
     float hp;
@@ -21,6 +23,16 @@ public class Player : MonoBehaviour
     void CheckEglibleLimbs() {
         for (int i = 0; i < 5; i++) {
             eglibleLimbs[i] = (availableLimbs[i] && (currentTrigger != null) && currentTrigger.IsLimbEglibleForTrigger(i));
+        }
+    }
+
+    void HideUnavailableLimbs() {
+        for (int i = 0; i < 5; i++) {
+            limbs[i].SetActive(availableLimbs[i]);
+        }
+
+        if (!availableLimbs[3] || !availableLimbs[4]) {
+            GetComponent<Movement>().ToggleCrawling(true);
         }
     }
 
@@ -58,6 +70,7 @@ public class Player : MonoBehaviour
 
     void Start() {
         hp = maxHp;
+        animator = GetComponent<Animator>();
     }
 
     void CheckHp() {
@@ -84,6 +97,8 @@ public class Player : MonoBehaviour
         float attackStarted = Time.time;
         Enemy enemy = null;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+        animator.SetTrigger((availableLimbs[1]) ? "AttackingR" : "AttackingL");
 
         while (Time.time < attackStarted + attackDuration) {
             if (enemy == null) {
@@ -112,6 +127,7 @@ public class Player : MonoBehaviour
         CheckAttack();
         UpdateOverlayColor();
         CheckEglibleLimbs();
+        HideUnavailableLimbs();
         UpdateLimbsColors();
         CheckHp();
     }
@@ -122,10 +138,6 @@ public class Player : MonoBehaviour
         StartCoroutine(Bleed());
         currentTrigger.PerformAction();
         currentTrigger = null;
-
-        if (!availableLimbs[3] || !availableLimbs[4]) {
-            GetComponent<Movement>().ToggleCrawling(true);
-        }
     }
 
     private void OnTriggerEnter(Collider other) {
