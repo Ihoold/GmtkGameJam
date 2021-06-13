@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
     }
 
     void FixModelRotation() {
-        if (!jumpInput && ladderInput > 0) {
+        if (!jumpInput && ladderInput > 0 && groundCheck.isNearLadder) {
             modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 720f * Time.deltaTime);
             return;
         }
@@ -78,7 +78,18 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 720f * Time.deltaTime);
+        if (!jumpInput && ladderInput > 0) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 180, 0), 720f * Time.deltaTime);
+            return;
+        }
+
+        if (!jumpInput && ladderInput < 0) {
+            modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 720f * Time.deltaTime);
+            return;
+        }
+
+        // don't return to idle
+        // modelRotation.transform.rotation = Quaternion.RotateTowards(modelRotation.transform.rotation, Quaternion.Euler(0, 0, 0), 720f * Time.deltaTime);
     }
 
     float ProcessHorizontalMovement() {
