@@ -251,7 +251,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 60
+  attackDuration: 1
+  attackRange: 1.5
   bloodOverlay: {fileID: 0}
   bodyUI: {fileID: 0}
   menuManager: {fileID: 0}
   availableLimbs: 0101010101
+  isAttacking: 0

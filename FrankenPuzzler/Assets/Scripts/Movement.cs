@@ -97,6 +97,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+        if (GetComponent<Player>().isAttacking) return;
         RecordMovementInput();
         RecordJumpInput();
         RecordLadderInput();
@@ -105,6 +106,7 @@ public class Movement : MonoBehaviour
 
 
     void FixedUpdate() {
+        if (GetComponent<Player>().isAttacking) return;
         ProcessMovement();
     }
 }

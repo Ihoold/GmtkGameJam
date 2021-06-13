@@ -9,7 +9,7 @@ public class DeathZone : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.tag == "Player") {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            collision.collider.gameObject.GetComponent<Player>().Die();
         }
     }
 }
