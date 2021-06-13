@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public MenuManager menuManager;
     public bool[] availableLimbs = new bool[5];
     public GameObject[] limbs = new GameObject[5];
+    public GameObject[] bloodParticles = new GameObject[5];
     public GameObject darknessUI;
     
     [HideInInspector] public bool isAttacking = false;
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
     void HideUnavailableLimbs() {
         for (int i = 0; i < 5; i++) {
             limbs[i].SetActive(availableLimbs[i]);
+            if (bloodParticles[i] != null) bloodParticles[i].SetActive(!availableLimbs[i]);
         }
         GetComponent<Movement>().ToggleCrawling(!availableLimbs[3] || !availableLimbs[4]);
         darknessUI.SetActive(!availableLimbs[0]);
