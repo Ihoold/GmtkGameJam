@@ -14,7 +14,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material
-    second: {fileID: 2100000, guid: 6f75f2bd822301143a0c393975e089a7, type: 2}
+    second: {fileID: 2100000, guid: ca1865c3b5d84f5409f7568862233263, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -163,7 +163,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 
