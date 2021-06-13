@@ -237,7 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 60
   attackDuration: 1
-  attackRange: 1.5
+  attackRange: 2
   bloodOverlay: {fileID: 0}
   bodyUI: {fileID: 0}
   menuManager: {fileID: 0}

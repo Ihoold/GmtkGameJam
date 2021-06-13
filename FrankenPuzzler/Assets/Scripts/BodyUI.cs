@@ -7,6 +7,7 @@ public class BodyUI : MonoBehaviour
 {
     public Color EglibleColor;
     public Color UnavailableColor;
+    public Color DroppedColor;
     public Color AvailableColor;
 
     public Player player;

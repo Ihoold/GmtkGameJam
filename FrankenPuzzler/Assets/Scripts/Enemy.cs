@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     public void Die() {
         this.gameObject.SetActive(false);
-        GameObject.Instantiate(droppedLimb, transform.position, Quaternion.identity);
+        if (droppedLimb != null) GameObject.Instantiate(droppedLimb, new Vector3(transform.position.x, 0, 0), Quaternion.identity);
     }
 
     internal void SetAttacked()

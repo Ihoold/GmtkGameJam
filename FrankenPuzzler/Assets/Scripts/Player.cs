@@ -17,13 +17,21 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool isAttacking = false;
     bool attackInput;
     Animator animator;
+    Limb currentLimb;
     Trigger currentTrigger = null;
     bool[] eglibleLimbs = new bool[5];
+    bool[] droppedLimbs = new bool[5];
     float hp;
 
     void CheckEglibleLimbs() {
         for (int i = 0; i < 5; i++) {
             eglibleLimbs[i] = (availableLimbs[i] && (currentTrigger != null) && currentTrigger.IsLimbEglibleForTrigger(i));
+        }
+    }
+
+    void CheckDroppedLimbs() {
+        for (int i = 0; i < 5; i++) {
+            droppedLimbs[i] = (!availableLimbs[i] && (currentLimb != null) && currentLimb.DoesLimbFitInIndex(i));
         }
     }
 
@@ -57,7 +65,9 @@ public class Player : MonoBehaviour
 
     void UpdateLimbsColors() {
         for (int i = 0; i < 5; i++) {
-            if (!availableLimbs[i]) {
+            if (droppedLimbs[i]) {
+                bodyUI.bodyParts[i].color = bodyUI.DroppedColor;
+            } else if (!availableLimbs[i]) {
                 bodyUI.bodyParts[i].color = bodyUI.UnavailableColor;
             } else if (eglibleLimbs[i]) {
                 bodyUI.bodyParts[i].color = bodyUI.EglibleColor;
@@ -82,11 +92,16 @@ public class Player : MonoBehaviour
         menuManager.ShowDeathMenu();
     }
 
+    public bool isInFront(GameObject obj){
+        return Vector3.Dot(-GetComponent<Movement>().modelRotation.forward, transform.InverseTransformPoint(obj.transform.position)) > 0;
+    }
+
     public Enemy CheckForAttackedEnemy() {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.right * attackRange, Color.cyan, 1f);
-        if (Physics.Raycast(transform.position, transform.right, out hit, attackRange, 1 << LayerMask.NameToLayer("Enemies"))) {
-            return hit.collider.GetComponent<Enemy>();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, attackRange, 1 << LayerMask.NameToLayer("Enemies"));
+        foreach (Collider col in colliders) {
+            if (isInFront(col.gameObject)) {
+                return col.GetComponent<Enemy>();
+            }
         }
         return null;
     }
@@ -126,12 +141,20 @@ public class Player : MonoBehaviour
         CheckAttack();
         UpdateOverlayColor();
         CheckEglibleLimbs();
+        CheckDroppedLimbs();
         HideUnavailableLimbs();
         UpdateLimbsColors();
         CheckHp();
     }
 
+    public void RestoreLimb(int index) {
+        availableLimbs[index] = true;
+        GameObject.Destroy(currentLimb.gameObject);
+        currentLimb = null;
+    }
+
     public void SacraficeLimb(int index) {
+        if (droppedLimbs[index]) RestoreLimb(index);
         if (!eglibleLimbs[index]) return;    
         availableLimbs[index] = false;
         StartCoroutine(Bleed());
@@ -141,9 +164,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Trigger" && !other.GetComponent<Trigger>().used) currentTrigger = other.GetComponent<Trigger>();
+        if (other.gameObject.tag == "Limb") currentLimb = other.GetComponent<Limb>();
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.tag == "Trigger") currentTrigger = null;
+        if (other.gameObject.tag == "Limb") currentLimb = null;
     }
 }

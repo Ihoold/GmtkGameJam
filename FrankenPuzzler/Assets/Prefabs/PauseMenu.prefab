@@ -1821,6 +1821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EglibleColor: {r: 1, g: 0.8352942, b: 0.41176474, a: 1}
   UnavailableColor: {r: 0.81568635, g: 0.098039225, b: 0.27450982, a: 1}
+  DroppedColor: {r: 0.654902, g: 0.78823537, b: 0.20784315, a: 1}
   AvailableColor: {r: 1, g: 1, b: 1, a: 1}
   player: {fileID: 0}
   bodyParts:
