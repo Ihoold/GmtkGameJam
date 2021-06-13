@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
     float jumpVelocity;
     float currentMoveSpeed;
     Rigidbody rb;
+    Animator animator;
 
     public void SetWalkingSpeed() {
         currentMoveSpeed = walkingSpeed;
@@ -50,8 +51,12 @@ public class Movement : MonoBehaviour
         ladderInput = climbingSpeed * Input.GetAxisRaw("Vertical"); 
     }
 
+    // void FixModelRotation()
+
     float ProcessHorizontalMovement() {
-        return horizontalMoveInput * currentMoveSpeed;
+        float horizontalMovement = horizontalMoveInput * currentMoveSpeed;
+        animator.SetBool("Moving", Mathf.Abs(horizontalMovement) > 0.01f);
+        return horizontalMovement;
     }
 
     float ProcessVerticalMovement() {
@@ -69,7 +74,7 @@ public class Movement : MonoBehaviour
         return velocity;
     }
 
-    void ToggleCrawling(bool toggle) {
+    public void ToggleCrawling(bool toggle) {
         isCrawling = toggle;
         if (isCrawling) {
             SetCrawlingSpeed();
@@ -78,6 +83,7 @@ public class Movement : MonoBehaviour
             SetWalkingSpeed();
             transform.localScale = new Vector3(transform.localScale.x, 1f, transform.localScale.z);
         }
+        animator.SetBool("Crawling", isCrawling);
     }
 
     void ProcessMovement() {
@@ -91,6 +97,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         CalculateJumpVelocity();
         SetWalkingSpeed();
     }

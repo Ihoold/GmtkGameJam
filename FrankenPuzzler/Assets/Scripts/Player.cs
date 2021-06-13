@@ -122,6 +122,10 @@ public class Player : MonoBehaviour
         StartCoroutine(Bleed());
         currentTrigger.PerformAction();
         currentTrigger = null;
+
+        if (!availableLimbs[3] || !availableLimbs[4]) {
+            GetComponent<Movement>().ToggleCrawling(true);
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
